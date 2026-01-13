@@ -3,17 +3,20 @@ pipeline{
 		stages{
 			stage("build"){
 				steps{
-					echo "building"	
+					echo "building"
+					sh 'make build'	
 				}
 			}
 			stage("test"){
 				steps{
-					echo "testing"	
+					echo "testing"
+					sh 'make test'	
 				}
 			}
 			stage("deploy"){
 				steps{
-					echo "deploying"	
+					echo "deploying"
+					archiveArtifacts artifacts: "app", fingerprint:true	
 				}
 			}
 	}
