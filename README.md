@@ -1,53 +1,43 @@
-# DevOps C Calculator Project
+# DevOps C Calculator Server
 
-This repository contains a simple C application (Calculator) designed to demonstrate CI/CD concepts using Jenkins.
+This repository contains a simple C-based HTTP Server designed to demonstrate CI/CD concepts using Jenkins.
 
 ## Project Structure
-- `src/`: Source code (`main.c`, `utils.c`, `utils.h`).
+- `src/`: Source code (`server.c`, `utils.c`, `utils.h`).
 - `tests/`: Unit tests (`test_utils.c`).
 - `Makefile`: Build automation tool.
 
 ## Local Development
-Before working on the pipeline, you should understand how to build and test the application locally.
-
 ### Prerequisites
 - GCC Compiler
 - Make
 
-## Install gcc and make using the commands 
-```bash
-apt install gcc make
-```
-
 ### Build
-To compile the application:
+To compile the server:
 ```bash
-make build
+make server
 ```
-This produces an executable named `app`.
+This produces an executable named `server`.
 
 ### Run
+To start the server:
 ```bash
-./app add 5 3
-# Output: 8
-
-./app sub 10 4
-# Output: 6
+./server
 ```
+It listens on **port 8080**.
+
+### API Usage
+Use `curl` or a browser to access the math functions:
+- **Add**: `http://localhost:8080/add?a=10&b=5` -> Returns 15
+- **Sub**: `http://localhost:8080/sub?a=10&b=5` -> Returns 5
+- **Mul**: `http://localhost:8080/mul?a=10&b=5` -> Returns 50
+- **Div**: `http://localhost:8080/div?a=10&b=5` -> Returns 2
 
 ### Test
 To run unit tests:
 ```bash
 make test
 ```
-This compiles the test runner and asserts that the utility functions work correctly.
-
-### Release (Tagging)
-To simplify creating git tags for releases, a helper target is provided:
-```bash
-make release VERSION=v1.0.0
-```
-This commands creates a git tag and pushes it to the remote repository.
 
 ---
 
@@ -56,18 +46,23 @@ This commands creates a git tag and pushes it to the remote repository.
 Your task is to generate a **Declarative Jenkins Pipeline** that automates the build, test, and release process.
 
 ### Requirements
-Create a `Jenkinsfile` in the root of the repository with the following specifications:
-
-1.  **Agent**: Use `any` or a suitable Docker agent with C tools installed.
+1.  **Agent**: Use `any`.
 2.  **Stages**:
-    *   **Build**: Execute the make target to compile the code.
-    *   **Test**: Execute the make target to run unit tests.
-    *   **Deploy**: Archive the produced artifact (`app`).
+    *   **Build**: Execute `make server`.
+    *   **Test**: Execute `make test`.
+    *   **Deploy**: Archive the produced artifact (`server`).
 3.  **Versioning**:
+<<<<<<< Updated upstream
     *   Implement logic to handle artifact versioning.
     *   **Release Builds**: If the build is triggered by a Git Tag (e.g., `v1.0.0`), valid `env.TAG_NAME`, rename the artifact to `app-<TAG_NAME>`.
     *   **Dev Builds**: For normal branches, rename the artifact to include the branch name and build number (e.g., `app-<BRANCH>-<BUILD_NUM>`).
+=======
+    *   **Release Builds**: If the build is triggered by a Git Tag (e.g., `v1.0.0`), valid `git describe --tags`, rename the artifact to `server-<TAG_NAME>`.
+    *   **Dev Builds**: For normal branches, rename the artifact to `server-dev-<BUILD_NUM>`.
+>>>>>>> Stashed changes
 
-### Expected Outcome
-- When you push a commit, Jenkins should build, test, and archive a dev artifact.
-- When you create a release tag (`make release VERSION=v1.0.1`), Jenkins should build, test, and archive a release artifact (e.g., `app-v1.0.1`).
+### Release
+To create a release:
+```bash
+make release VERSION=v1.0.0
+```
