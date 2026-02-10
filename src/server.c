@@ -6,7 +6,7 @@
 #include <netinet/in.h>
 #include "utils.h"
 
-#define PORT 8080
+#define PORT 8050
 
 void handle_client(int client_socket) {
     char buffer[1024];

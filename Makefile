@@ -4,7 +4,7 @@ CFLAGS = -Wall -I./src
 all: server
 
 server:
-	$(CC) $(CFLAGS) -o server src/server.c src/utils.c
+	$(CC) $(CFLAGS) -static -o server src/server.c src/utils.c
 
 test:
 	$(CC) $(CFLAGS) -o test_runner tests/test_utils.c src/utils.c
